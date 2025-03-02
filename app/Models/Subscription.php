@@ -4,22 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Subscription extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'customer_id', 'subscription_plan_id', 'start_date', 'end_date',
+        'customer_id', 'subscription_plan_id', 'end_date', 'payment_method'
     ];
 
-    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    protected $casts = [
+        "end_date" => "date"
+    ];
+
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }
 
-    public function plan(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function plan(): BelongsTo
     {
-        return $this->belongsTo(SubscriptionPlan::class);
+        return $this->belongsTo(SubscriptionPlan::class, "subscription_plan_id");
     }
 }

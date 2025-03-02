@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CustomerResource\Pages;
+use App\Filament\Resources\CustomerResource\RelationManagers\SubscriptionsRelationManager;
 use App\Models\Customer;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\DeleteAction;
@@ -23,21 +24,43 @@ class CustomerResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
+    public static function getModelLabel(): string
+    {
+        return "Müşderi";
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return "Müşderiler";
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('first_name')
+                    ->label("Ady")
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('last_name')
+                    ->label("Familiýasy")
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('address')
+                    ->label("Salgy")
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('city')
+                    ->label("Şäher")
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
+                    ->label("E-poçtasy")
                     ->email()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
+                    ->label("Telefon belgisi")
                     ->required()
                     ->maxLength(15),
                 Forms\Components\TextInput::make('address'),
@@ -49,12 +72,12 @@ class CustomerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('first_name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('last_name')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('email')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('phone')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('address')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('city')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('first_name')->label("Ady")->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('last_name')->label("Familiýasy")->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('email')->label("E-poçtasy")->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('phone')->label("Telefon belgi")->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('address')->label("Salgy")->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('city')->label("Şäher")->searchable()->sortable(),
             ])
             ->filters([
                 //
@@ -82,7 +105,7 @@ class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SubscriptionsRelationManager::class
         ];
     }
 

@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("customer_id")->constrained();
+            $table->foreignId("subscription_plan_id")->constrained();
+            $table->date("end_date");
+            $table->string("payment_method", 25);
             $table->timestamps();
         });
     }
